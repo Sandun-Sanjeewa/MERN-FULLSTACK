@@ -11,7 +11,7 @@ function App() {
     },
     {
       path:"/add",
-      element: <AddUser/>
+      element: <AddUser/>,
     }
   ])
   return (
