@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./user.css"
 import axios from "axios"
 import {Link} from "react-router-dom";
+import toast from 'react-hot-toast';
 
 const User = () => {
 
@@ -19,6 +20,17 @@ const User = () => {
         fetchData();
     },[]);
 
+    const deleteUser =async(userId)=>{
+        await axios.delete(`http://localhost:8000/api/delete/user/${userId}`)
+        .then((response)=>{
+            setUsers((prevUser)=>prevUser.filter((user)=>user._id !==userId));
+            toast.success(response.data.message,{position:"top-right"});
+        })
+        
+        .catch((error)=>{
+            console.log(error);
+        });
+    };
 
 
   return (
@@ -45,7 +57,7 @@ const User = () => {
                         <td className='actionButtons'>
                         
                         <Link to={`/Update/`+user._id} type="button" class="btn btn-info"> <i class="fa-solid fa-pen-to-square"> </i> </Link>
-                        <button type="button" class="btn btn-danger"> <i class="fa-solid fa-trash"> </i> </button>
+                        <Link onClick={()=>deleteUser(user._id)} type="button" class="btn btn-danger"> <i class="fa-solid fa-trash"> </i> </Link>
                         
                         </td>
                     </tr>
